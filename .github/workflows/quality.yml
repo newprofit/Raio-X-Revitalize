@@ -14,10 +14,6 @@ jobs:
         with:
           node-version: '24'
           cache: npm
-      - name: Prepare PDF dependency lock
-        run: |
-          npm install --package-lock-only --ignore-scripts
-          node -e "console.log('PDF_LOCK_BEGIN:'+Buffer.from(require('fs').readFileSync('package-lock.json')).toString('base64')+':PDF_LOCK_END')"
       - run: npm ci
       - run: npm run build
       - run: npm test
@@ -27,7 +23,9 @@ jobs:
           for file in pdf-test-results/*.pdf; do pdftotext -layout "$file" "${file%.pdf}.txt"; done
           node tests/pdf-validation.mjs
           pdftoppm -f 1 -singlefile -scale-to 1200 -png pdf-test-results/relatorio.pdf pdf-test-results/relatorio-preview
-          node -e "console.log('PDF_PREVIEW_BEGIN:'+require('fs').readFileSync('pdf-test-results/relatorio-preview.png').toString('base64')+':PDF_PREVIEW_END')"
+          if [ "$GITHUB_REF" = "refs/heads/codex/pdf-export" ]; then
+            node -e "console.log('PDF_PREVIEW_BEGIN:'+require('fs').readFileSync('pdf-test-results/relatorio-preview.png').toString('base64')+':PDF_PREVIEW_END')"
+          fi
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
         env:

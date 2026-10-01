@@ -36,8 +36,9 @@ Para usar o backend real, preencha as variáveis públicas e configure VITE_DEMO
 | src/supabase.ts | Cliente público, Auth e chamada à Edge Function |
 | src/analytics.ts | Eventos genéricos internos |
 | src/turnstile.ts | CAPTCHA e renovação de token |
-| src/admin.ts | Login, indicadores, filtros, detalhes e CSV |
+| src/admin.ts | Login, indicadores, filtros, detalhes, CSV e PDF |
 | src/csv.ts | Exportação protegida contra fórmulas |
+| src/admin-pdf.ts | PDF paginado do relatório filtrado e diagnóstico individual |
 | supabase/functions/diagnostic/index.ts | Entrada pública segura |
 | supabase/migrations/ | Schema, RLS, transação e relatórios |
 | tests/ | Testes de domínio, SQL e navegador |
@@ -79,7 +80,7 @@ UTMs usam a primeira página da sessão e sessionStorage. Referrer guarda apenas
 
 ## Painel
 
-Indicadores de início, conclusão, taxa e marketing; distribuições por pilar, função, tamanho, cidade/estado e origem; filtros; paginação; detalhes completos; CSV de todos os resultados filtrados.
+Indicadores de início, conclusão, taxa e marketing; distribuições por pilar, função, tamanho, cidade/estado e origem; filtros; paginação; detalhes completos; CSV e PDF de todos os resultados filtrados. O diagnóstico individual também possui exportação PDF com todas as respostas e comentários. A geração usa pdf-lib no navegador, carregada apenas ao exportar, e o logotipo local; não há serviço externo de conversão.
 
 Taxa = sessões concluídas / sessões iniciadas na mesma coorte. Período padrão: 30 dias. Filtros de perfil afetam leads e distribuições, não o denominador anônimo. Empates contam em cada pilar, portanto a soma da distribuição pode exceder o total de diagnósticos.
 

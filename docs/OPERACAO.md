@@ -60,8 +60,14 @@ commit;
 
 Antes de qualquer integração, reconsulte o consentimento atual no momento do envio. Para mudanças frequentes, acrescente histórico restrito de consentimentos. O horário e a versão atuais identificam o aceite original.
 
-## Logs e CSV
+## Logs e exportações
 
 O código não registra corpo das requisições, IP, contato, tokens, respostas ou erros internos do banco. Revise também os logs mantidos pelos provedores.
 
-O CSV contém dados pessoais e classificações. Use-o para análise interna autorizada e armazenamento restrito. Exportação não autoriza marketing; filtre as permissões apropriadas.
+CSV e PDF contêm dados pessoais e classificações. Use-os para análise interna autorizada e armazenamento restrito. Exportação não autoriza marketing; filtre as permissões apropriadas.
+
+No painel, aplique os filtros antes de escolher **Exportar CSV** ou **Exportar PDF**. Ambos incluem todos os cadastros encontrados, não apenas a página visível. O PDF inclui filtros, métricas, distribuições e os dados de cada lead. As métricas de conclusão mantêm a coorte do período.
+
+Ao abrir um diagnóstico, **Exportar diagnóstico PDF** gera um arquivo com cadastro, classificações, 18 respostas, comentários e desafio de 90 dias. Os arquivos são gerados no navegador autenticado; nenhum dado é enviado a um serviço externo de conversão.
+
+PDFs longos são paginados automaticamente. A fonte preserva acentos em português; caracteres sem glifo são indicados pelo código Unicode, com nota no arquivo. O texto original continua íntegro no painel.

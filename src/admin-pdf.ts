@@ -70,9 +70,10 @@ class ReportWriter{
  heading(text:string){this.ensure(62);this.y-=10;this.text(text,17,true,green,0,12);}
  field(label:string,v:unknown){this.text(label+': '+value(v),9,false,ink,0,5);}
  banner(title:string,subtitle:string){
-  this.ensure(88);
+  this.ensure(115);
+  const top=this.y;
   this.page.drawRectangle({x:margin,y:this.y-70,width:contentWidth,height:86,color:pale});
-  this.y-=8;this.text(title,20,true,green,15,8);this.text(subtitle,10,false,muted,15,15);
+  this.y-=8;this.text(title,20,true,green,15,8);this.text(subtitle,10,false,muted,15,15);this.y=Math.min(this.y,top-92);
  }
  divider(){this.ensure(24);this.page.drawLine({start:{x:margin,y:this.y},end:{x:pageWidth-margin,y:this.y},color:line,thickness:1});this.y-=20;}
  async finish(){
@@ -124,7 +125,7 @@ export async function makeAdminPdf(report:PdfReport,filters:Record<string,string
   else items.forEach(item=>w.field(kind==='priority'?pillarNames[item.label]||item.label:item.label,item.count));
  }
  w.text('Empates entram na contagem de cada pilar correspondente. As contagens por pilar podem somar mais que o número de diagnósticos.',9,false,muted);
- w.newPage();w.heading('Cadastros incluídos');
+ if(report.rows.length)w.newPage();w.heading('Cadastros incluídos');
  if(!report.rows.length)w.text('Nenhum diagnóstico encontrado para estes filtros.',11,false,muted);
  report.rows.forEach((row,i)=>{w.ensure(125);w.heading(String(i+1).padStart(2,'0')+' · '+value(row.name));leadFields(w,row);w.divider();});
  return w.finish();
