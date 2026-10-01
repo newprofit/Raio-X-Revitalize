@@ -23,9 +23,9 @@
 .result-report .result-card summary::-webkit-details-marker{display:none}
 .result-report .result-card summary:hover{background:#f6f8f3}
 .result-report .result-card-name{font-size:16px;line-height:1.4;font-weight:600;min-height:45px}
-.result-report .level{font-size:13px;font-weight:650;display:inline-block;align-self:flex-start;line-height:1.6}
+.result-report .level{margin:0;font-size:13px;font-weight:650;display:inline-block;align-self:flex-start;line-height:1.6}
 .result-report .card-measure{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.result-report .count{font-size:11px;color:var(--muted)}
+.result-report .count{margin:0;font-size:11px;color:var(--muted)}
 .result-report .count-blocks{display:flex;gap:4px;margin:0}
 .result-report .count-blocks span{height:5px;width:19px}
 .result-report .card-expand{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:13px;color:var(--green);font-size:12px;font-weight:600}
@@ -69,7 +69,7 @@
 .result-report .leadership-reflection{margin:28px 0 0;border-radius:8px;padding:25px 28px;background:var(--green);color:white}
 .result-report .leadership-reflection .eyebrow{color:var(--lime)}
 .result-report .leadership-reflection .reflection-intro{font-size:13px;color:#e0e9dc;margin-top:12px}
-.result-report .leadership-reflection .reflection-question{font-size:20px;line-height:1.5;margin-top:9px;font-weight:500}
+.result-report .leadership-reflection .reflection-question{color:white;font-size:20px;line-height:1.5;margin-top:9px;font-weight:500}
 .result-report .priority-reading .reading-footer{font-size:13px;color:var(--muted);margin-top:23px}
 .result-report .consistent-reading,.result-report .challenge-reading{max-width:850px;margin:40px auto;padding:32px 38px;border:1px solid var(--line);border-radius:12px;background:#fff}
 .result-report .consistent-reading h2,.result-report .challenge-reading h2{font-size:28px;margin:10px 0 18px}
@@ -117,7 +117,8 @@
  .result-report .interpretations .priority-reading{break-inside:auto;padding:20px}
  .result-report .reading-heading,.result-report .leadership-reflection,.result-report .reading-impact{break-inside:avoid}
  .result-report .leadership-reflection{background:#f3f6ee;color:#174c3b;border:1px solid #a0b292}
- .result-report .leadership-reflection .eyebrow,.result-report .leadership-reflection .reflection-intro{color:#174c3b}
+ .result-report .leadership-reflection .eyebrow,.result-report .leadership-reflection .reflection-intro,.result-report .leadership-reflection .reflection-question{color:#174c3b}
+ .result-report .priority-summary .summary-direction{color:#444;border-top-color:#bbb}
  .result-report .reading-heading h2{font-size:23px}
  .result-report .report-section-heading h2{font-size:24px}
  .result-report .consistent-reading,.result-report .challenge-reading{padding:20px}
