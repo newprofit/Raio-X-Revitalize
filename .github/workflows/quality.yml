@@ -1,7 +1,7 @@
 name: Qualidade
 on:
   push:
-    branches: [main, codex/richer-results]
+    branches: [main, 'codex/**']
 permissions:
   contents: read
 jobs:
@@ -21,6 +21,7 @@ jobs:
       - run: npm run test:e2e
         env:
           VITE_DEMO_MODE: 'true'
+          BRAND_VISUAL_REVIEW: ${{ github.ref == 'refs/heads/codex/official-brand' }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

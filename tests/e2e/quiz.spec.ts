@@ -98,3 +98,37 @@ test('prévia administrativa vazia mostra layout sem simular cadastros',async({p
  await page.screenshot({path:'test-results/'+testInfo.project.name+'-painel.png',fullPage:true});
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
+
+
+test('marca oficial legível e sem cortes nas telas de celular',async({page},testInfo)=>{
+ if(testInfo.project.name!=='mobile')return;
+ const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
+ for(const width of [320,360,390,430]){
+  await page.setViewportSize({width,height:844});
+  await page.goto('/');
+  await expect(page.locator('.brand-logo')).toBeVisible();
+  await expect(page.locator('.hero-brand-logo')).toBeVisible();
+  await page.locator('.orbit-core img').evaluate((img:HTMLImageElement)=>img.decode());
+  const brand=await page.locator('.brand-logo').evaluate((img:HTMLImageElement)=>({loaded:img.complete&&img.naturalWidth>0,width:img.getBoundingClientRect().width,height:img.getBoundingClientRect().height}));
+  expect(brand.loaded).toBe(true);
+  expect(brand.width).toBeGreaterThanOrEqual(220);
+  expect(brand.width/brand.height).toBeCloseTo(1600/398,2);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  const cta=page.getByRole('button',{name:'Iniciar diagnóstico'});
+  const size=await cta.boundingBox();expect(size!.height).toBeGreaterThanOrEqual(44);
+  const favicon=await page.evaluate(async()=>{
+   const icon=new Image();icon.src=document.querySelector<HTMLLinkElement>('link[rel=icon]')!.href;
+   await icon.decode();return [icon.naturalWidth,icon.naturalHeight];
+  });
+  expect(favicon).toEqual([398,398]);
+  await page.screenshot({path:'test-results/mobile-brand-'+width+'.png',fullPage:true});
+  if(process.env.BRAND_VISUAL_REVIEW==='true'&&(width===320||width===390)){
+   const preview=await page.screenshot({type:'jpeg',quality:65,fullPage:false});
+   console.log('BRAND_PREVIEW_'+width+'_BEGIN:'+preview.toString('base64')+':BRAND_PREVIEW_'+width+'_END');
+  }
+ }
+ await page.goto('/privacidade.html');
+ await expect(page.locator('header img')).toBeVisible();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ expect(errors).toEqual([]);
+});

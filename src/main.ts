@@ -23,7 +23,7 @@ const demoBanner=()=>demoMode?status('Prévia local · Você pode experimentar o
 function intro(){
  app.innerHTML=shell(demoBanner()+`<main class="landing">
  <section class="hero-copy"><div class="eyebrow"><span class="tiny-dot"></span> UM OLHAR PARA A SUA IGREJA</div>
- <h1 tabindex="-1">Raio-X<br><em>Revitalize.</em></h1>
+ <h1 tabindex="-1" class="hero-title">Raio-X<span class="visually-hidden"> Revitalize</span><img class="hero-brand-logo" src="/brand/revitalize-logo.jpg" width="1600" height="398" alt="" decoding="async"></h1>
  <p class="hero-subtitle">Um diagnóstico inicial para ajudar você a identificar quais áreas da sua igreja merecem mais atenção neste momento.</p>
  <p class="muted hero-description">Responda algumas perguntas sobre a realidade da sua igreja. Ao final, você receberá uma leitura inicial das áreas que parecem estar mais consistentes e das que podem merecer maior atenção.</p>
  <div id="start-error"></div><button id="start" class="button primary large">${resumed?'Continuar diagnóstico':'Iniciar diagnóstico'} ${arrow}</button>
@@ -31,7 +31,7 @@ function intro(){
  <div class="hero-meta"><span>✓ Gratuito</span><span>✓ 6 áreas de reflexão</span><span>✓ Resultado personalizado</span></div>
  </section><section class="hero-visual" aria-label="Seis pilares do diagnóstico">
  <div class="visual-top"><span class="eyebrow">UM RETRATO DO SEU MOMENTO</span><span class="corner-icon">↗</span></div>
- <div class="orbit" aria-hidden="true"><div class="orbit-circle one"></div><div class="orbit-circle two"></div><div class="orbit-line vertical"></div><div class="orbit-line horizontal"></div><div class="orbit-core">r<span>↗</span></div><span class="orbit-dot a"></span><span class="orbit-dot b"></span><span class="orbit-dot c"></span><span class="orbit-dot d"></span></div>
+ <div class="orbit" aria-hidden="true"><div class="orbit-circle one"></div><div class="orbit-circle two"></div><div class="orbit-line vertical"></div><div class="orbit-line horizontal"></div><div class="orbit-core"><img src="/brand/revitalize-tree.svg" width="398" height="398" alt="" decoding="async"></div><span class="orbit-dot a"></span><span class="orbit-dot b"></span><span class="orbit-dot c"></span><span class="orbit-dot d"></span></div>
  <h2>Clareza para o<br>próximo passo.</h2>
  <div class="pillar-preview">${pillars.map((p,i)=>`<div><span>0${i+1}</span>${e(p.short)}</div>`).join('')}</div>
  <div class="visual-bottom"><span>ESCUTAR. COMPREENDER. CAMINHAR.</span><span>06 / PILARES</span></div>

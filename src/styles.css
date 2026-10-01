@@ -124,3 +124,37 @@
  .result-report .consistent-reading,.result-report .challenge-reading{padding:20px}
  .result-report .result-closing{padding:20px;border:1px solid var(--line)}
 }
+
+/* Official Revitalize identity, preserving the supplied artwork and proportions. */
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.site-header .brand{display:block;width:270px;max-width:100%;line-height:0;flex-shrink:0}
+.brand-logo{display:block;width:100%;height:auto}
+.hero-copy .hero-title{line-height:1.05}
+.hero-brand-logo{display:block;width:420px;max-width:100%;height:auto;margin-top:18px}
+.orbit .orbit-core{padding:0;letter-spacing:normal;background:transparent;box-shadow:none}
+.orbit-core img{display:block;width:100%;height:100%;border-radius:50%}
+.result-report .result-stamp{background:transparent;border:0}
+.result-stamp img{display:block;width:100%;height:auto;border-radius:50%}
+.site-footer>.footer-brand{display:flex;flex-direction:column;gap:10px}
+.footer-brand img{display:block;width:175px;max-width:100%;height:auto}
+@media(max-width:760px){
+ .site-header .header-inner{padding:16px 22px;justify-content:center}
+ .site-header .brand{width:min(236px,100%)}
+ .site-header .header-tag{display:none}
+ .hero-copy .hero-title{font-size:58px}
+ .hero-brand-logo{width:100%;max-width:420px;margin-top:14px}
+ .site-footer>.footer-brand{margin-top:0;align-items:flex-start;gap:9px}
+ .site-footer>div:not(.footer-brand){flex-wrap:wrap}
+ .orbit .orbit-core{inset:51px}
+}
+@media(max-width:360px){
+ .landing,.quiz-layout,.result-page{margin-left:18px;margin-right:18px}
+ .landing{margin-left:0;margin-right:0;padding-left:18px;padding-right:18px}
+ .hero-copy .hero-title{font-size:52px}
+ .result-report .result-heading h1{font-size:35px}
+ .hero-meta{flex-wrap:wrap;justify-content:flex-start}
+}
+@media print{
+ .hero-brand-logo{max-width:300px}
+ .result-report .result-stamp{display:block;width:60px;height:60px;margin-top:0}
+}
