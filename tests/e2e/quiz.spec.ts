@@ -1,4 +1,5 @@
 import {test,expect, type Page} from '@playwright/test';
+import {readFile} from 'node:fs/promises';
 async function answerPillar(page:Page,yes=true){
  for(const id of await page.locator('input[data-answer][value="yes"]').evaluateAll(els=>els.map(el=>(el as HTMLInputElement).name))){
  await page.locator('input[name="'+id+'"][value="'+(yes?'yes':'no')+'"]').check();
@@ -95,6 +96,8 @@ test('prévia administrativa vazia mostra layout sem simular cadastros',async({p
  await expect(page.getByText('Nenhum diagnóstico encontrado para estes filtros.')).toBeVisible();
  await page.getByRole('button',{name:'Exportar CSV'}).click();
  await expect(page.getByText('A exportação ficará disponível com os cadastros reais, após a conexão com o banco.')).toBeVisible();
+ await page.getByRole('button',{name:'Exportar PDF',exact:false}).click();
+ await expect(page.getByText('A exportação em PDF ficará disponível com os cadastros reais, após a conexão com o banco.')).toBeVisible();
  await page.screenshot({path:'test-results/'+testInfo.project.name+'-painel.png',fullPage:true});
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
@@ -131,4 +134,22 @@ test('marca oficial legível e sem cortes nas telas de celular',async({page},tes
  await expect(page.locator('header img')).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  expect(errors).toEqual([]);
+});
+
+test('arquivo PDF é baixado no navegador com o logotipo local',async({page},testInfo)=>{
+ await page.goto('/admin?preview=1');
+ const external:string[]=[];
+ page.on('request',request=>{if(new URL(request.url()).origin!=='http://127.0.0.1:5178')external.push(request.url());});
+ const downloading=page.waitForEvent('download');
+ await page.evaluate(async()=>{
+  const modulePath='/src/admin-pdf.ts';
+  const {makeAdminPdf,loadPdfLogo,downloadPdf}=await import(modulePath);
+  const logo=await loadPdfLogo();
+  const bytes=await makeAdminPdf({rows:[],total:0,starts:0,completed:0,marketing:0,distributions:[]},{source:'teste-interface'},{logo});
+  downloadPdf(bytes,'revitalize-teste.pdf');
+ });
+ const file=await downloading;expect(file.suggestedFilename()).toBe('revitalize-teste.pdf');expect(await file.failure()).toBeNull();
+ const path='test-results/'+testInfo.project.name+'-exportado.pdf';await file.saveAs(path);
+ expect((await readFile(path)).subarray(0,4).toString()).toBe('%PDF');
+ expect(external).toEqual([]);
 });

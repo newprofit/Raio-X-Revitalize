@@ -15,7 +15,8 @@
     "test:production": "npm run build && node tests/production-smoke.mjs"
   },
   "dependencies": {
-    "@supabase/supabase-js": "2.117.2"
+    "@supabase/supabase-js": "2.117.2",
+    "pdf-lib": "1.17.1"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.8",

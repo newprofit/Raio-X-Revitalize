@@ -158,3 +158,10 @@
  .hero-brand-logo{max-width:300px}
  .result-report .result-stamp{display:block;width:60px;height:60px;margin-top:0}
 }
+
+.detail-actions{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+@media(max-width:760px){
+ .admin-controls{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:10px}
+ .admin-controls .button{justify-content:center;min-height:46px;padding:12px}
+ .detail-actions .button{flex:1;justify-content:center;min-height:46px}
+}

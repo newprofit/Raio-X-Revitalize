@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+const report=await readFile('pdf-test-results/relatorio.txt','utf8');
+for(const text of ['Diagnósticos recebidos','instagram','Marketing: Não autorizado','ultimo@example.invalid','Visão','Discipulado','Base consistente','conteúdo de teste','versão-teste','Página 1 de'])assert.ok(report.includes(text),'Texto ausente: '+text);
+const empty=await readFile('pdf-test-results/vazio.txt','utf8');
+assert.ok(empty.includes('Indisponível para este período'));
+assert.ok(empty.includes('Nenhum diagnóstico encontrado'));
+assert.ok(!empty.includes('Taxa de conclusão no período: 0%'));
+const individual=await readFile('pdf-test-results/individual.txt','utf8');
+for(const id of ['vision','diagnosis','simplification','discipleship','change','conflict'])assert.ok(individual.includes('FINAL_DO_COMENTARIO_'+id));
+for(const text of ['FINAL_DO_DESAFIO','[U+1F64F]','<script>texto literal</script>','Gestão de Conflitos'])assert.ok(individual.includes(text),'Texto individual ausente: '+text);
+console.log('PDFs validados por extração de texto: paginação, UTF-8, dados completos, vazio e histórico.');
