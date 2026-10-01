@@ -47,3 +47,48 @@ conflict: [
 };
 export const resultIntro='Esta é uma leitura inicial baseada nas suas respostas. Use este retrato como ponto de partida para uma conversa com sua liderança.';
 export const resultClosing='Continue acompanhando o Revitalize. A partir dos resultados deste diagnóstico, estamos preparando novos conteúdos e ferramentas para ajudar pastores e líderes a enfrentarem esses desafios de forma prática.';
+
+export type PillarGuidance = {
+ headline:string;
+ attention:readonly [string,string,string];
+ strengths:readonly [string,string,string];
+ firstSteps:readonly [string,string,string];
+};
+export const pillarGuidance:Record<PillarId,PillarGuidance> = {
+ vision:{
+ headline:'Uma direção clara ajuda a igreja a caminhar junto.',
+ attention:['Tornar mais clara a direção da igreja para os próximos anos.','Fortalecer a compreensão e o compromisso da liderança com essa direção.','Conectar decisões, ministérios e atividades à direção da igreja.'],
+ strengths:['Você reconhece uma direção clara para os próximos anos.','Você percebe a liderança alinhada em torno dessa direção.','Você percebe decisões e atividades conectadas à direção da igreja.'],
+ firstSteps:['Reúna alguns líderes e peça que cada um descreva, com suas próprias palavras, para onde a igreja está caminhando.','Comparem as respostas e conversem sobre os pontos de clareza e as diferenças de entendimento.','Registrem uma direção comum e escolham uma decisão concreta que precisa ser alinhada a ela.']
+ },
+ diagnosis:{
+ headline:'Compreender a realidade ajuda a escolher o próximo passo.',
+ attention:['Reconhecer com mais clareza os pontos fortes e as fragilidades da igreja.','Conhecer melhor as necessidades e as mudanças da comunidade ao redor.','Apoiar decisões importantes numa leitura da realidade interna e externa.'],
+ strengths:['Você percebe clareza sobre os pontos fortes e as fragilidades da igreja.','Você reconhece um conhecimento das necessidades da comunidade ao redor.','Você percebe decisões apoiadas numa análise da realidade.'],
+ firstSteps:['Escolham uma situação que hoje precisa ser melhor compreendida.','Reúnam fatos disponíveis e escutem as pessoas envolvidas, incluindo a comunidade quando fizer sentido.','Separem o que já sabem do que ainda precisam descobrir antes de decidir.']
+ },
+ simplification:{
+ headline:'Muita atividade nem sempre significa clareza de missão.',
+ attention:['Tornar mais claro o propósito de cada ministério e atividade.','Reavaliar se os programas continuam contribuindo para a missão da igreja.','Ajustar as demandas à capacidade atual de líderes e voluntários.'],
+ strengths:['Você percebe um propósito claro nos ministérios e nas atividades.','Você reconhece uma avaliação periódica da contribuição dos programas.','Você percebe as demandas compatíveis com a capacidade da equipe.'],
+ firstSteps:['Escolham uma atividade que hoje exige muita energia da equipe.','Conversem sobre seu propósito, sua contribuição para a missão e a capacidade de sustentá-la.','Registrem um ajuste possível e combinem quando vão avaliar o efeito desse ajuste.']
+ },
+ discipleship:{
+ headline:'O discipulado ganha força quando o caminho se torna claro.',
+ attention:['Definir com mais clareza o caminho de crescimento como discípulo de Cristo.','Fortalecer o acompanhamento de quem chega à igreja.','Ajudar discípulos a amadurecer e começar a discipular outras pessoas.'],
+ strengths:['Você reconhece um caminho claro de crescimento como discípulo de Cristo.','Você percebe acompanhamento de quem chega à igreja.','Você reconhece discípulos que passam a acompanhar outras pessoas.'],
+ firstSteps:['Descrevam o caminho que uma pessoa percorre hoje, desde sua chegada à igreja até acompanhar outra pessoa.','Identifiquem em que etapa o acompanhamento fica menos claro e quem pode cuidar dela.','Escolham uma melhoria nessa etapa e combinem como acompanhar sua implementação.']
+ },
+ change:{
+ headline:'Uma mudança necessária precisa de uma condução cuidadosa.',
+ attention:['Reconhecer quando mudanças importantes se tornam necessárias.','Comunicar com mais clareza as mudanças que a igreja precisa fazer.','Conduzir mudanças sem que a resistência paralise o processo.'],
+ strengths:['Você percebe a liderança capaz de reconhecer mudanças necessárias.','Você reconhece uma comunicação clara das mudanças.','Você percebe capacidade de implementar mudanças mesmo diante de resistência.'],
+ firstSteps:['Escolham uma mudança necessária e descrevam juntos por que ela importa.','Escutem as dúvidas das pessoas envolvidas e revisem como a mudança está sendo comunicada.','Definam um primeiro passo viável, quem o acompanha e quando a liderança vai rever o andamento.']
+ },
+ conflict:{
+ headline:'A maneira de conduzir um conflito também cuida da unidade.',
+ attention:['Tratar conflitos diretamente, em vez de apenas adiá-los.','Lidar com discordâncias sem transformar todo conflito em ruptura.','Conduzir conflitos preservando a verdade, os relacionamentos e a unidade.'],
+ strengths:['Você percebe a liderança tratando conflitos diretamente.','Você reconhece capacidade de lidar com discordâncias sem ruptura.','Você percebe cuidado com a verdade, os relacionamentos e a unidade.'],
+ firstSteps:['Identifiquem uma divergência que precisa de uma conversa clara, evitando expor pessoas publicamente.','Preparem a conversa com escuta, fatos e clareza sobre o que precisa ser tratado.','Combinem um encaminhamento possível e uma forma de acompanhar os relacionamentos envolvidos.']
+ }
+};

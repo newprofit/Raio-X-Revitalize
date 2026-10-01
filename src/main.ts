@@ -1,7 +1,8 @@
 import './styles.css';
 import { pillars,roles,churchSizes,states,questionId } from '../shared/questions.ts';
-import { score,ranked,levels,type Diagnosis } from '../shared/scoring.ts';
-import { approvedResultTexts,resultIntro,resultClosing } from './results.ts';
+import { score,type Diagnosis } from '../shared/scoring.ts';
+import { resultClosing } from './results.ts';
+import { renderResultBody,type ResultContext } from './result-view.ts';
 import { track } from './analytics.ts';
 import { restoreDraft,newDraft,saveDraft,clearDraft,attribution,type Draft } from './storage.ts';
 import { demoMode,privacyUrl,publicRequest,validHttps } from './supabase.ts';
@@ -13,6 +14,7 @@ let resumed=Object.keys(draft.answers).length>0;
 let mode:'intro'|'quiz'|'result'='intro';
 let contact:Record<string,string|boolean>={};
 let busy=false,token='',result:Diagnosis|null=null,storageWarning=false;
+let resultContext:ResultContext={answers:{},comments:{},challenge:''};
 const source=attribution();
 const bind=(selector:string,event:string,fn:(event:Event)=>void)=>document.querySelector(selector)?.addEventListener(event,fn);
 function persist(){if(!saveDraft(draft))storageWarning=true;}
@@ -108,21 +110,25 @@ async function submit(){
  try{
  if(demoMode)result=score(draft.answers);
  else {const data=await publicRequest('submit',{token:draft.token,answers:draft.answers,comments:draft.comments,challenge_90_days:draft.challenge,contact,attribution:source,website:contact.website||'',turnstile_token:token});result=data.result;}
+ resultContext={answers:{...draft.answers},comments:{...draft.comments},challenge:draft.challenge};
  mode='result';clearDraft();contact={};draft=newDraft();track('quiz_complete');render();track('result_view');focusTitle();
  }catch(err){if((err as {status?:number}).status===409){delete draft.token;persist();}errorBox.innerHTML=status((err as Error).message,true)+((err as {status?:number}).status===409?'<a href="/">Voltar ao início e continuar com as respostas salvas</a>':'');resetTurnstile();token='';button.disabled=false;button.innerHTML='Tentar novamente '+arrow;}
  finally{busy=false;}
 }
 function renderResult(){
  if(!result)return;
- const priority=result.priority_pillars.map(id=>pillars.find(p=>p.id===id)!);
  const cta=validHttps(import.meta.env.VITE_RESULT_CTA_URL);
- app.innerHTML=shell(demoBanner()+`<main class="result-page"><div class="result-heading"><div><span class="eyebrow">SEU RAIO-X REVITALIZE</span><h1 tabindex="-1">Clareza para<br><em>seguir em frente.</em></h1></div><span class="result-stamp" aria-hidden="true">r↗</span></div><p class="result-intro">${e(resultIntro)}</p>
- <section class="priority-summary"><span class="eyebrow">${priority.length>1?'PRINCIPAIS ÁREAS DE ATENÇÃO':priority.length===1?'PRINCIPAL ÁREA DE ATENÇÃO':'UM PONTO DE PARTIDA CONSISTENTE'}</span><h2>${priority.length?priority.map(p=>e(p.name)).join(' · '):'Base consistente nas seis áreas'}</h2><p>${priority.length>1?'Estas áreas tiveram a mesma quantidade de respostas “Não”. Todas recebem o mesmo destaque.':priority.length?'Esta área concentrou a maior quantidade de respostas “Não”.':'Você respondeu “Sim” às 18 perguntas. Nenhum pilar se destacou como área de atenção neste diagnóstico.'}</p></section>
- <section class="result-grid" aria-label="Resultado das seis áreas">${ranked(result).map(p=>`<article class="result-card"><div><span class="eyebrow">${e(p.name)}</span><span class="count">${result!.counts[p.id]} de 3 “Não”</span></div><h3 class="level level-${result!.counts[p.id]}">${levels[result!.counts[p.id]]}</h3><div class="count-blocks" aria-hidden="true">${[1,2,3].map(n=>`<span class="${n<=result!.counts[p.id]?'filled':''}"></span>`).join('')}</div></article>`).join('')}</section>
- <section class="interpretations">${priority.map(p=>`<article><span class="eyebrow">UM OLHAR PARA · ${e(p.name)}</span>${approvedResultTexts[p.id].split('\n\n').map((text,i)=>i===0?`<h2>${e(text)}</h2>`:`<p>${e(text)}</p>`).join('')}</article>`).join('')}</section>
- <section class="result-closing"><h2>O diagnóstico é o começo.<br>O próximo passo é seu.</h2><p>${e(resultClosing)}</p><div class="result-actions">${cta?`<a id="result-cta" class="button primary" href="${e(cta)}" target="_blank" rel="noopener noreferrer">${e(import.meta.env.VITE_RESULT_CTA_LABEL||'Conhecer o Revitalize')} ${arrow}</a>`:''}<button id="print" class="button secondary">Salvar ou imprimir resultado</button></div></section></main>`);
+ app.innerHTML=shell(demoBanner()+`<main class="result-page result-report">${renderResultBody(result,resultContext)}
+ <section class="result-closing"><span class="eyebrow">UM PRÓXIMO PASSO POSSÍVEL</span><h2>Você não precisa resolver<br>tudo de uma vez.</h2><p>Comece por uma conversa honesta, escolha um passo possível e caminhe com sua liderança.</p><p>${e(resultClosing)}</p><div class="result-actions">${cta?`<a id="result-cta" class="button primary" href="${e(cta)}" target="_blank" rel="noopener noreferrer">${e(import.meta.env.VITE_RESULT_CTA_LABEL||'Conhecer o Revitalize')} ${arrow}</a>`:''}<button id="print" class="button secondary">Salvar ou imprimir resultado</button></div></section></main>`);
  bind('#result-cta','click',()=>track('result_cta_click'));
- bind('#print','click',()=>{track('result_cta_click');window.print();});
+ bind('#print','click',()=>{
+  track('result_cta_click');
+  const details=Array.from(document.querySelectorAll<HTMLDetailsElement>('.result-card details'));
+  const states=details.map(detail=>detail.open);
+  details.forEach(detail=>{detail.open=true;});
+  window.addEventListener('afterprint',()=>details.forEach((detail,i)=>{detail.open=states[i];}),{once:true});
+  window.print();
+ });
 }
 function privacy(){
  app.innerHTML=shell(`<main class="privacy-page"><span class="eyebrow">PRIVACIDADE</span><h1>Seus dados,<br>com transparência.</h1>${privacyUrl?`<p>Consulte a versão vigente da Política de Privacidade do Revitalize.</p><a class="button primary" href="${e(privacyUrl)}" rel="noopener noreferrer">Ler Política de Privacidade ↗</a>`:status('A política de privacidade está em configuração. O envio de cadastros reais ficará indisponível até sua publicação.')}

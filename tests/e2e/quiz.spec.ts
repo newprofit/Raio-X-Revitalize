@@ -56,6 +56,13 @@ test('fluxo completo, recarga, retorno, empate e privacidade',async({page},testI
  await expect(page.getByText('Seu principal ponto de atenção parece estar na clareza de visão.',{exact:true})).toBeVisible();
  await expect(page.getByText('Seu principal ponto de atenção parece estar no processo de discipulado.',{exact:true})).toBeVisible();
  await expect(page.locator('.result-card')).toHaveCount(6);
+ await expect(page.getByText('Desafio preenchido apenas no teste.',{exact:true})).toBeVisible();
+ await expect(page.locator('.priority-reading')).toHaveCount(2);
+ await expect(page.locator('.priority-reading').first().locator('.attention-points li')).toHaveCount(3);
+ await expect(page.locator('.priority-reading').first().locator('.first-steps li')).toHaveCount(3);
+ await page.locator('.result-card').first().locator('summary').click();
+ await expect(page.getByText('Comentário para testar a restauração.',{exact:true})).toBeVisible();
+ await expect(page.locator('.result-card').first().locator('.answer-review li')).toHaveCount(3);
  expect(await page.evaluate(()=>localStorage.getItem('revitalize:draft:v1'))).toBeNull();
  const events=await page.evaluate(()=>(window as any).events);
  expect(events.some((e:any)=>e.event==='quiz_complete')).toBe(true);
